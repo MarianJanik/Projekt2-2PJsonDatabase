@@ -2,7 +2,6 @@ package cz.marianjanik.ekurz;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 public class VatState {
 
     private String country;

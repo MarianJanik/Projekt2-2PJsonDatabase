@@ -44,11 +44,15 @@ public class VatStateMap {
         return rates.size();
     }
 
+    public Set<String> getAllStateAbbreviations() {
+        return rates.keySet();
+    }
+
     public String getForTaxRates(String countryAbbreviation) {
         String text = "Rates: standard - reduce - reduce alt - reduce super - parking\n";
-               text += rates.get(countryAbbreviation).getCountry() + ":    "
-                + rates.get(countryAbbreviation).getStandardRate() + " --- "
-                + rates.get(countryAbbreviation).getReducedRate() + " --- "
+               text += rates.get(countryAbbreviation).getCountry() + ":   "
+                + rates.get(countryAbbreviation).getStandardRate() + " ----- "
+                + rates.get(countryAbbreviation).getReducedRate() + " ----- "
                 + rates.get(countryAbbreviation).getReducedRateAlt() + " ----- "
                 + rates.get(countryAbbreviation).getSuperReducedRate() + " ----- "
                 + rates.get(countryAbbreviation).getParkingRate() + "\n";
@@ -61,14 +65,29 @@ public class VatStateMap {
         return ratesList;
     }
 
-    public String getAllInfo(List<VatState> listRates){
+    public String getAllInfo(List<VatState> listRates) {
         StringBuilder builder = new StringBuilder();
-        builder.append("Rates: standard - reduce - reduce alt - reduce super - parking\n");
+        int counter = 0;
+        builder.append("    Rates:   standard - reduce - reduce alt - reduce super - parking\n\n");
         for (VatState item:listRates) {
-            builder.append(item.getCountry() + ":    " + item.getStandardRate() + " --- " + item.getReducedRate()
-                    + " --- " + item.getReducedRateAlt() + " ----- " + item.getSuperReducedRate() + " ----- " + item.getParkingRate() + "\n");
+            counter++;
+            builder.append(item.getCountry() + ":" + getChar(item.getCountry(), 15," ")
+                    + item.getStandardRate() + " -----" + getChar(item.getReducedRate(), 5,"-") + " "
+                    + item.getReducedRate() + " -----" + getChar(item.getReducedRateAlt(), 5,"-") + " "
+                   + item.getReducedRateAlt() + " -----" + getChar(item.getSuperReducedRate(), 5,"-") + " "
+                    + item.getSuperReducedRate() + " -----" + getChar(item.getParkingRate(), 5,"-") + " "
+                    + item.getParkingRate() + "\n");
+            if ((counter % 5) == 0) builder. append("\n");
         }
         return builder.toString();
+    }
+
+    private String getChar(String text, int length, String character) {
+        String resultingText = "";
+        for (int i = text.length(); i < length ; i++) {
+            resultingText += character;
+        }
+        return resultingText;
     }
 
     public List sortStandardRate(List<VatState> listRates) {
@@ -76,7 +95,7 @@ public class VatStateMap {
         return listRates;
     }
 
-    public List getInfo3SmallStandardRates(List<VatState> listRates,int numberOfCountry) {
+    public List getInfo3SmallStandardRates(List<VatState> listRates,long numberOfCountry) {
         List <VatState> myList = sortStandardRate(listRates);
         List <VatState> listChoice = new ArrayList<>();
         for (int i = 0; i < numberOfCountry ; i++) {
@@ -85,7 +104,7 @@ public class VatStateMap {
         return listChoice;
     }
 
-    public List getInfo3BigStandardRates(List<VatState> listRates,int numberOfCountry) {
+    public List getInfo3BigStandardRates(List<VatState> listRates,long numberOfCountry) {
         List <VatState> myList = sortStandardRate(listRates);
         List <VatState> listChoice = new ArrayList<>();
         for (int i = myList.size()-1; i > myList.size()-numberOfCountry-1 ; i--) {

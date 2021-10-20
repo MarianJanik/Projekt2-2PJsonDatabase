@@ -1,40 +1,25 @@
 package cz.marianjanik.ekurz;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        final String MY_URL = "https://euvatrates.com/rates.json";
-        final int NUMBER_OF_COUNTRIES = 7;
+        final int NUMBER_OF_COUNTRIES = 4;
         final String FILENAME = "TheBestAndWorstRates.txt";
         List ratesList;
 
         System.out.println("\n\n-------------------------------------------------1. Volání API pomocí HTTP (výpis JSON):");
-        HttpClientRestApi client = new HttpClientRestApi();
-        String jsonText = null;
-        try {
-            jsonText = client.callApi(MY_URL);
-        } catch (IOException e) {
-            System.err.println(e.getMessage() + "\nWebová stránky: " + MY_URL);
-        } catch (InterruptedException e) {
-            System.err.println(e.getMessage() + "\nNačtení z adresy " + MY_URL + " se nezdařilo.");
-        }
+
+        String jsonText = CallJson.getJsonText();
         System.out.println(jsonText);
 
-        System.out.println("\n\n-------------------------------------------------2. Načítání JSON souboru - mapování (do mapy):");
-        VatStateMapper stateMapper = new VatStateMapper();
-        System.out.println("\n\n-------------------------------------------------3. Naparsování JSON souboru do objektů:");
-        VatStateMap vatState = null;
-        try {
-            vatState = stateMapper.mapToObject(jsonText);
-        } catch (JsonProcessingException e) {
-            System.err.println("Převedení textových proměnných ze souboru JSON do mapy se nezdařilo.");
-        }
+        System.out.println("\n\n-------------------------------------------------2. Načítání JSON souboru ");
+        System.out.println("\n\n-------------------------------------------------3. + naparsování JSON souboru do objektů - mapování:");
+        VatStateMap vatState = CallJson.getJsonToMap();
+
         System.out.println("Počet načtených objektů v mapě: " + vatState.size());
 
         System.out.println("\n\n-------------------------------------------------4. Implementování vyhledávací logiky - s použitím listu:");

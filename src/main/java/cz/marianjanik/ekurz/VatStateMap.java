@@ -11,10 +11,9 @@ public class VatStateMap {
 
     @JsonProperty(value = "last_updated")
     private String lastUpdated;
-
     private String disclaimer;
-
     private Map<String, VatState> rates = new HashMap<>();
+
 
     public String getLastUpdated() {
         return lastUpdated;
